@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connect Phantom Wallet</title>
+</head>
+<body>
+  <h1>Connect to Phantom Wallet</h1>
+  <button id="connect-wallet">Connect Phantom Wallet</button>
+  
+  <script>
+    document.getElementById('connect-wallet').addEventListener('click', async () => {
+      if (window.solana && window.solana.isPhantom) {
+        try {
+          const resp = await window.solana.connect(); // Connects to Phantom
+          console.log('Connected to wallet:', resp.publicKey.toString());
+          alert(`Connected: ${resp.publicKey.toString()}`);
+        } catch (err) {
+          console.error('Connection to Phantom failed', err);
+        }
+      } else {
+        alert('Please install Phantom Wallet!');
+      }
+    });
+  </script>
+</body>
+</html>
