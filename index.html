@@ -8,24 +8,22 @@
 <body>
   <h1>Connect to Phantom Wallet</h1>
   <button id="connect-wallet">Connect Phantom Wallet</button>
-  
+
   <script>
-    // Function to detect if the browser is on a mobile device
     function isMobile() {
       return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
     }
 
-    // Function to handle the connection process
     async function connectPhantom() {
       if (isMobile()) {
-        // Mobile deep link to open Phantom wallet app directly
-        window.location.href = 'https://phantom.app/ul/browse/' + encodeURIComponent(window.location.href);
+        // Use Phantom's deeplink for mobile
+        const deeplink = 'https://phantom.app/ul/v1/connect?redirect_link=' + encodeURIComponent(window.location.href);
+        window.location.href = deeplink;
       } else {
-        // Desktop logic for Phantom wallet extension
+        // Desktop logic for Phantom extension
         if (window.solana && window.solana.isPhantom) {
           try {
-            const resp = await window.solana.connect(); // Connects to Phantom
-            console.log('Connected to wallet:', resp.publicKey.toString());
+            const resp = await window.solana.connect();
             alert(`Connected: ${resp.publicKey.toString()}`);
           } catch (err) {
             console.error('Connection to Phantom failed', err);
@@ -36,7 +34,6 @@
       }
     }
 
-    // Add event listener to the button
     document.getElementById('connect-wallet').addEventListener('click', connectPhantom);
   </script>
 </body>
