@@ -10,19 +10,34 @@
   <button id="connect-wallet">Connect Phantom Wallet</button>
   
   <script>
-    document.getElementById('connect-wallet').addEventListener('click', async () => {
-      if (window.solana && window.solana.isPhantom) {
-        try {
-          const resp = await window.solana.connect(); // Connects to Phantom
-          console.log('Connected to wallet:', resp.publicKey.toString());
-          alert(`Connected: ${resp.publicKey.toString()}`);
-        } catch (err) {
-          console.error('Connection to Phantom failed', err);
-        }
+    // Function to detect if the browser is on a mobile device
+    function isMobile() {
+      return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    }
+
+    // Function to handle the connection process
+    async function connectPhantom() {
+      if (isMobile()) {
+        // Mobile deep link to open Phantom wallet app directly
+        window.location.href = 'https://phantom.app/ul/browse/' + encodeURIComponent(window.location.href);
       } else {
-        alert('Please install Phantom Wallet!');
+        // Desktop logic for Phantom wallet extension
+        if (window.solana && window.solana.isPhantom) {
+          try {
+            const resp = await window.solana.connect(); // Connects to Phantom
+            console.log('Connected to wallet:', resp.publicKey.toString());
+            alert(`Connected: ${resp.publicKey.toString()}`);
+          } catch (err) {
+            console.error('Connection to Phantom failed', err);
+          }
+        } else {
+          alert('Please install Phantom Wallet!');
+        }
       }
-    });
+    }
+
+    // Add event listener to the button
+    document.getElementById('connect-wallet').addEventListener('click', connectPhantom);
   </script>
 </body>
 </html>
